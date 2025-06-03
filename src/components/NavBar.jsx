@@ -1,18 +1,36 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router';
+import { BASE_URL } from '../utils/constants';
+import { removeUser } from '../utils/userSlice';
 
 const NavBar = () => {
   const user = useSelector((store) => store.user);
-  console.log(user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    if (!user) return;
+    try {
+      await axios.post(BASE_URL + '/logout', {}, { withCredentials: true });
+      dispatch(removeUser());
+      return navigate('/login');
+    } catch (err) {
+      // Error logic maybe redirect to error page
+      console.log(err);
+    }
+  };
 
   return (
-    <div className="navbar bg-base-300 shadow-sm">
+    <div className="navbar bg-base-300">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">TinderClone</a>
+        <Link to="/" className="btn btn-ghost text-xl">
+          👩‍💻 TinderClone
+        </Link>
       </div>
       {user && (
         <div className="flex gap-2 mx-5 items-center">
-          <p>Welcome! {user.user.firstName}</p>
+          <p>Welcome! {user?.user?.firstName}</p>
           <div className="dropdown dropdown-end ">
             <div
               tabIndex={0}
@@ -20,30 +38,31 @@ const NavBar = () => {
               className="btn btn-ghost btn-circle avatar ml-4"
             >
               <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src={
-                    user.user.photo ??
-                    'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'
-                  }
-                />
+                <img alt="user photo" src={user?.user?.photoUrl} />
               </div>
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a className="justify-between">
+                <Link to="/profile" className="justify-between">
                   Profile
                   <span className="badge">New</span>
-                </a>
+                </Link>
               </li>
               <li>
-                <a>Settings</a>
+                <Link to="/connections">Connections</Link>
+              </li>
+
+              <li>
+                <Link to="/requests">Requests</Link>
               </li>
               <li>
-                <a>Logout</a>
+                <Link to="/premium">Premium</Link>
+              </li>
+              <li>
+                <a onClick={handleLogout}>Logout</a>
               </li>
             </ul>
           </div>
@@ -52,5 +71,4 @@ const NavBar = () => {
     </div>
   );
 };
-
 export default NavBar;

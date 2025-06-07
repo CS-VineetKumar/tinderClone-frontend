@@ -53,7 +53,7 @@ const Login = () => {
       try {
         const res = await axios.post(
           `${BASE_URL}/login`,
-          { emailId, password },
+          { email: emailId, password },
           { withCredentials: true }
         );
         dispatch(addUser(res.data));
@@ -69,10 +69,10 @@ const Login = () => {
       try {
         const res = await axios.post(
           `${BASE_URL}/signup`,
-          { firstName, lastName, emailId, password },
+          { firstName, lastName, email: emailId, password },
           { withCredentials: true }
         );
-        dispatch(addUser(res.data.data));
+        dispatch(addUser(res.data));
         navigate('/profile');
       } catch (err) {
         setGeneralError(err?.response?.data?.message || 'Something went wrong');
@@ -90,10 +90,13 @@ const Login = () => {
 
           {!isLoginForm && (
             <>
-              <label className="form-control w-full max-w-xs my-2">
-                <span className="block text-sm font-medium mb-1">
+              <div className="mb-2 mt-4">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium mb-1"
+                >
                   First Name
-                </span>
+                </label>
                 <input
                   type="text"
                   value={firstName}
@@ -103,12 +106,15 @@ const Login = () => {
                 {error.firstName && (
                   <p className="text-red-500 text-sm mt-1">{error.firstName}</p>
                 )}
-              </label>
+              </div>
 
-              <label className="form-control w-full max-w-xs my-2">
-                <span className="block text-sm font-medium mb-1">
+              <div className="mb-2 mt-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium mb-1"
+                >
                   Last Name
-                </span>
+                </label>
                 <input
                   type="text"
                   value={lastName}
@@ -118,11 +124,11 @@ const Login = () => {
                 {error.lastName && (
                   <p className="text-red-500 text-sm mt-1">{error.lastName}</p>
                 )}
-              </label>
+              </div>
             </>
           )}
 
-          <div className="mb-4 mt-4">
+          <div className="mb-4 mt-2">
             <label htmlFor="email" className="block text-sm font-medium mb-1">
               Email
             </label>

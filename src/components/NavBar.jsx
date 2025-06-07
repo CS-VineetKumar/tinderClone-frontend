@@ -38,7 +38,13 @@ const NavBar = () => {
               className="btn btn-ghost btn-circle avatar ml-4"
             >
               <div className="w-10 rounded-full">
-                <img alt="user photo" src={user?.user?.photoUrl} />
+                <img
+                  alt="user photo"
+                  src={
+                    user?.user?.photoUrl ??
+                    'https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'
+                  }
+                />
               </div>
             </div>
             <ul

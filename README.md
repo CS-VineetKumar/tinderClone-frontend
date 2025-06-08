@@ -48,8 +48,8 @@ Router=/profile => Profile
     - Signup on AWS
     - Launch instance
     - chmod 400 <secret>.pem
-    - ssh -i "devTinder-secret.pem" ubuntu@ec2-43-204-96-49.ap-south-1.compute.amazonaws.com
-    - Install Node version 16.17.0
+    - ssh -i "devTinder-secret.pem" ubuntu@ec2-51-20-193-114.eu-north-1.compute.amazonaws.com
+    - Install Node version 20.13.0
     - Git clone
     - Frontend
         - npm install  -> dependencies install
@@ -57,6 +57,7 @@ Router=/profile => Profile
         - sudo apt update
         - sudo apt install nginx
         - sudo systemctl start nginx
+        - sudo systemctl restart nginx
         - sudo systemctl enable nginx
         - Copy code from dist(build files) to /var/www/html/
         - sudo scp -r dist/* /var/www/html/
@@ -87,7 +88,7 @@ Router=/profile => Profile
         server_name 43.204.96.49;
 
         location /api/ {
-            proxy_pass http://localhost:7777/;  # Pass the request to the Node.js app
+            proxy_pass http://localhost:3000/;  # Pass the request to the Node.js app
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection 'upgrade';
